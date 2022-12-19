@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="printThis.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <title>Tabelador</title>
+</head>
+<style>
+    *{padding: 0;margin: 0;box-sizing: border-box;background-color: #fff;}
+    .container{
+        background-color:blanchedalmond;
+        position: relative;
+        border-radius: 5px;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.05);
+    }
+    input[type="file"]{display: none;}
+    label{
+        display: block;
+        position: relative;
+        background-color: aquamarine;
+        color: #fff;
+        font-size: 18px;
+        text-align: center;
+        width: 300px;
+        padding: 18px 0;
+        margin: 10px auto;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #images{
+        position: relative;
+        margin: auto;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 5px;
+        flex-wrap: wrap;
+        padding: 10px 10px;
+    }
+    figure{width: 25%;border: 5px solid black;}
+    img{width: 100%;padding: 5px;}
+    figcaption{text-align: center;font-size: 2vmin;}
+    .text{color: #fff;background: #032653;font-size:12px;font-weight:300;letter-spacing:1px;}
+    .rodape{
+        background: #032653;
+        padding:10px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align:center;
+        flex-direction:column-reverse;
+    }
+</style>
+<body>
+    <input type="file" id="fileput" accept="image/png,image/jpeg" multiple onchange="preview()">
+    <label for="fileput">Escolher fotos</label>
+    <label style="background-color: rgb(0, 238, 255);" id="print">Imprimir ou PDF</label>
+    <div class="container" id="content">
+        <div id="images"></div>
+    </div>
+    <div class="rodape">
+        <p class="text">Construido e desenvolvido por <a href="https://catripilar.github.io/BIIBSites/" style="color:rgb(5, 180, 255);background: #032653;">BIIB Sites</a> @2022</p>
+    </div>
+</body>
+<script>
+    $(document).ready(function(){
+        $('#print').click(function(){
+            $('#content').printThis();
+        });
+    });
+    var files = document.getElementById("fileput");
+    var image = document.getElementById("images");
+    function preview(){
+        image.innerHTML = "";
+        for(i of files.files){
+            let render = new FileReader();
+            let figure = document.createElement("figure");
+            let figCap = document.createElement("figcaption");
+            figCap.innerText = i.name.slice(0, -4);
+            figure.appendChild(figCap);
+            render.onload=()=>{
+                let img = document.createElement("img");
+                img.setAttribute("src",render.result);
+                figure.insertBefore(img,figCap)
+            }
+            image.appendChild(figure)
+            render.readAsDataURL(i)
+        }
+    }
+</script>
+</html>
