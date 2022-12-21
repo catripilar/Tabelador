@@ -39,9 +39,9 @@
         flex-wrap: wrap;
         padding: 10px 10px;
     }
-    figure{width: 25%;border: 5px solid black;}
-    img{width: 100%;padding: 5px;}
-    figcaption{text-align: center;font-size: 2vmin;}
+    figure{width: 25%;}
+    img{width: 100%;padding: 5px;height: 60px;}
+    figcaption{text-align: center;font-size: 1.5vmin;}
     .text{color: #fff;background: #032653;font-size:12px;font-weight:300;letter-spacing:1px;}
     .rodape{
         background: #032653;
@@ -52,16 +52,26 @@
         text-align:center;
         flex-direction:column-reverse;
     }
+    input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    }
 </style>
 <body>
     <input type="file" id="fileput" accept="image/png,image/jpeg" multiple onchange="preview()">
     <label for="fileput">Escolher fotos</label>
     <label style="background-color: rgb(0, 238, 255);" id="print">Imprimir ou PDF</label>
+    <input type="text" placeholder="imagens para quebrar linha" id="lin">
     <div class="container" id="content">
         <div id="images"></div>
-        <div class="rodape">
-            <p class="text">Construido e desenvolvido por <a href="https://catripilar.github.io/BIIBSites/" style="color:rgb(5, 180, 255);background: #032653;">BIIB Sites</a> @2022</p>
-        </div>
+    </div>
+    <div class="rodape">
+        <p class="text">Construido e desenvolvido por <a href="https://catripilar.github.io/BIIBSites/" style="color:rgb(5, 180, 255);background: #032653;">BIIB Sites</a> @2022</p>
     </div>
 </body>
 <script>
@@ -73,10 +83,13 @@
     var files = document.getElementById("fileput");
     var image = document.getElementById("images");
     function preview(){
+        var lin = 0;
+        var les = document.getElementById("lin").value;
         image.innerHTML = "";
         for(i of files.files){
             let render = new FileReader();
             let figure = document.createElement("figure");
+            if (lin == les){figure.style.margin = "0 0 100px";lin = 0;}
             let figCap = document.createElement("figcaption");
             figCap.innerText = i.name.slice(0, -4);
             figure.appendChild(figCap);
@@ -87,6 +100,7 @@
             }
             image.appendChild(figure)
             render.readAsDataURL(i)
+            lin = lin+1
         }
     }
 </script>
